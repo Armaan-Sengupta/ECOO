@@ -1,17 +1,25 @@
+import time
 f = open('DATA21.txt', 'r')
+start = time.time()
 for i in range(10):
   raw = f.readline().split(" ")
   num_rules = int(raw[0])
   iterations = int(raw[1])
   axiom = str(raw[2]).replace('\n', '')
-  rules = []
+  rules = {}
   for i in range(num_rules):
     raw = f.readline().split(" ")
-    rules.append((raw[0], raw[1].replace('\n', '')))
-
+    rules[raw[0]] = raw[1].replace('\n', '')
+  k = list(rules.keys())
   for i in range(iterations):
-    for rule in rules:
-      axiom = axiom.replace(rule[0], rule[1])
+    temp = []
+    for letter in axiom:
+      if letter in k:
+        temp.append(rules[letter])
+      else:
+        temp.append(letter)
+    axiom = ''.join(temp)
   
   print(f"{axiom[0]}{axiom[-1]} {len(axiom)}")
+print(f"Time Taken: {time.time() - start}")
 f.close()
